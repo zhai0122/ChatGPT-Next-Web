@@ -8,8 +8,6 @@ import {
   fetchEventSource,
 } from "@fortaine/fetch-event-source";
 import { prettyObject } from "@/app/utils/format";
-import fs from 'fs';
-const logFilePath = 'logs.txt';
 
 export class ChatGPTApi implements LLMApi {
   public ChatPath = "v1/chat/completions";
@@ -157,15 +155,6 @@ export class ChatGPTApi implements LLMApi {
 
         const resJson = await res.json();
         const message = this.extractMessage(resJson);
-
-        function writeLogToFile(log: string) {
-          fs.appendFile(logFilePath, log, (err) => {
-            if (err) {
-              console.error(err);
-            }
-          });
-        }
-        writeLogToFile(message);
         options.onFinish(message);
       }
     } catch (e) {
